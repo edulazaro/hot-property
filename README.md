@@ -1,6 +1,7 @@
 # Hot Property
 
 <p align="center">
+    <a href="https://edulazaro.itch.io/hot-property"><img src="https://img.shields.io/badge/play-itch.io-FA5C5C?logo=itchdotio&logoColor=white" alt="Play on itch.io"></a>
     <a href="https://github.com/edulazaro/hot-property/actions/workflows/tests.yml"><img src="https://github.com/edulazaro/hot-property/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
     <a href="https://github.com/edulazaro/hot-property/blob/main/package.json"><img src="https://img.shields.io/github/package-json/v/edulazaro/hot-property" alt="Version"></a>
     <a href="https://react.dev"><img src="https://img.shields.io/github/package-json/dependency-version/edulazaro/hot-property/react" alt="React"></a>
@@ -12,7 +13,7 @@ Arcade firefighting game set at night in a luxury housing development in Ordino,
 
 ![Hot Property](itch/cover.png)
 
-Runs in the browser on desktop and mobile, in English, Spanish and Catalan.
+**[Play it in your browser on itch.io](https://edulazaro.itch.io/hot-property)**. Works on desktop and mobile, in English, Spanish and Catalan.
 
 ## How to play
 
