@@ -34,6 +34,21 @@ export function createMusic(
   let gain: GainNode | null = null;
   let current = -1;
   let pauseTimer = 0;
+  let wanted = false;
+
+  /** Some browsers refuse play() outside a user gesture (e.g. when a track ends): retry on the next input. */
+  const retryOnInput = () => {
+    const events = ["pointerdown", "keydown", "touchstart"] as const;
+    const retry = () => {
+      for (const type of events) window.removeEventListener(type, retry);
+      if (wanted && audio?.paused) audio.play().catch(() => {});
+    };
+    for (const type of events) window.addEventListener(type, retry);
+  };
+
+  const start = (a: HTMLAudioElement) => {
+    a.play().catch(retryOnInput);
+  };
 
   const next = () => {
     if (choice !== "random") return choice;
@@ -58,7 +73,7 @@ export function createMusic(
     c.createMediaElementSource(a).connect(gain).connect(c.destination);
     a.addEventListener("ended", () => {
       load(a, next());
-      a.play().catch(() => {});
+      if (wanted) start(a);
     });
     load(a, next());
     audio = a;
@@ -76,9 +91,10 @@ export function createMusic(
       if (value === "random" || value === current) return;
       const playing = !audio.paused;
       load(audio, value);
-      if (playing) audio.play().catch(() => {});
+      if (playing) start(audio);
     },
     setPlaying(on) {
+      wanted = on;
       if (tracks.length === 0 || (!on && !audio)) return;
       const a = element();
       const now = getContext().currentTime;
@@ -86,7 +102,7 @@ export function createMusic(
       gain?.gain.cancelScheduledValues(now);
       gain?.gain.setTargetAtTime(on ? volume : 0, now, on ? FADE_IN : FADE_OUT);
       if (on) {
-        if (a.paused) a.play().catch(() => {});
+        if (a.paused) start(a);
       } else {
         pauseTimer = window.setTimeout(() => a.pause(), PAUSE_DELAY_MS);
       }
